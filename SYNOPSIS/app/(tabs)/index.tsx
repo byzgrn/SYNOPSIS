@@ -1,11 +1,35 @@
+import { useEffect } from 'react';
 import { Image, StyleSheet, Platform } from 'react-native';
 
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import {firebase} from '../src/firebase';
+
+
 
 export default function HomeScreen() {
+
+  useEffect(() => {
+   
+    const initializeApp = async () => {
+      try {
+        const userCredential =  await firebase.auth().signInWithEmailAndPassword("", "");
+        const user = userCredential.user;
+        if (user) {
+          console.log(`User is signed in: ${user.uid}`);
+        } else {
+          console.log('No user is signed in.');
+        }
+      } catch (error) {
+        console.error('Error during app initialization:', error);
+      }
+    };
+
+    initializeApp();
+  }, []);
+ 
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
