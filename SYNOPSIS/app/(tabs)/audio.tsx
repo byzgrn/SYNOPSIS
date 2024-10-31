@@ -1,7 +1,7 @@
 import AudioList from "../src/pages/AudioList";
 import AddAudio from "../src/pages/AddAudio";
 import SaveAudio from "../src/pages/SaveAudio";
-
+import { Image, View, StyleSheet } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Stack = createNativeStackNavigator();
