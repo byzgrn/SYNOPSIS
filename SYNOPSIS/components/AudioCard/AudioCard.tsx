@@ -6,6 +6,7 @@ import styles from './AudioCard.style';
 import {colors} from "../../constants/Colors";
 import {firebase} from "../../app/src/firebase";
 import playSound from '../../hooks/playSound';
+import processAudio from "@/hooks/processAudio";
 
 export type Audio = {
   audioNo: number;
@@ -28,6 +29,11 @@ const AudioCard = ({audio}:AudioCardProps) => {
         isPlaying,
 
     } = playSound(audio.name);
+
+    const {
+      process
+
+  } = processAudio(audio.name);
 
     useEffect(() => {
       return () => {
@@ -70,7 +76,10 @@ const AudioCard = ({audio}:AudioCardProps) => {
                 </View>
                 <View style={styles.buttonsLocation}>                                                   
                     <FontAwesome.Button style={styles.buttonContainer} name='trash' size={20} backgroundColor={colors.danger} onPress={deleteAudio}/>
-                </View>             
+                </View>  
+                <View style={styles.buttonsLocation}>                                                   
+                    <FontAwesome.Button style={styles.buttonContainer} name='play' size={20} backgroundColor={colors.darkbrown} onPress={process}/>
+                </View>           
                 
             </View>
         </TouchableOpacity>

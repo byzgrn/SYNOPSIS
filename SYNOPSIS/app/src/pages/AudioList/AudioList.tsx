@@ -22,14 +22,11 @@ export type AudioItem = {
   contentType: string;
 };
 
-const AudioList = ({ navigation }: navigationProp) => {
+const AudioList = () => {
   const userId = firebase.auth().currentUser?.uid;
   const storageRef = firebase.storage().ref();
   const [audioList, setAudioList] = useState([]);
 
-  function navigateToAddAudioScreen() {
-    navigation.navigate("AddAudio", { key: null });
-  }
 
   useEffect(() => {
     listAudios();

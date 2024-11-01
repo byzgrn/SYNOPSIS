@@ -11,15 +11,15 @@ import { firebase } from '../../firebase';
 import Button from '../../../../components/Button';
 
 type RootStackParamList = {
-  AudioList: { key: string | null };
+  AddAudio: { key: string | null };
 };
 export type navigationProp = {
-  navigation : StackNavigationProp<RootStackParamList, 'AudioList'>;}
+  navigation : StackNavigationProp<RootStackParamList, 'AddAudio'>;}
 
 const SaveAudio = ({navigation}:navigationProp) => { 
 
-  function navigateToAudioListScreen() {
-    navigation.navigate('AudioList', {key: null});
+  function navigateToAudioScreen() {
+    navigation.navigate('AddAudio', {key: null});
 }
 
   const [recording, setRecording] = useState<any>(); 
@@ -141,7 +141,7 @@ const SaveAudio = ({navigation}:navigationProp) => {
                       console.error('Error uploading file:', error);
                      
                     }).finally(() => {
-                      navigateToAudioListScreen();
+                      navigateToAudioScreen();
                     })
                     
 
