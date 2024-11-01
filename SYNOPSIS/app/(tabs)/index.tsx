@@ -1,23 +1,13 @@
 import React from "react";
-import AudioList from "../src/pages/AudioList";
-import {Image, View, StyleSheet } from "react-native";
+import FolderList from "../src/pages/FolderList/FolderList";
+import { createStackNavigator } from "@react-navigation/stack";
+
+const Stack = createStackNavigator();
 
 export default function TabTwoScreen() {
-  return (  
-    <>
-      <View style={styles.headerTitleContainer}>
-          <Image source={require("@/assets/images/SYNOPSISLogo.png")} />
-      </View>
-      <AudioList/>
-      </>
-
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="FolderList" component={FolderList} />
+    </Stack.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  headerTitleContainer: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
