@@ -27,18 +27,6 @@ export default function TabLayout() {
           ),
         }}
       />
-      <Tabs.Screen
-        name="audio"
-        options={{
-          title: "Audio",
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? "headset" : "headset-outline"}
-              color={colors.dark}
-            />
-          ),
-        }}
-      />
     </Tabs>
   );
 }
