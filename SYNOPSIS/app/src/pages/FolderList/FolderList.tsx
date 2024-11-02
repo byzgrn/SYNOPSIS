@@ -2,6 +2,7 @@ import styles from "./FolderList.style";
 import React, { useEffect, useState } from "react";
 import {
   View,
+  FlatList,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -12,137 +13,107 @@ import {
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { firebase } from "../../firebase";
+import { uploadBytes, deleteObject } from "firebase/storage";
 import { colors } from "@/constants/Colors";
+import Folder from "@/components/Folder/Folder";
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-type RootStackParamList = {
-  AudioList: { fileId: number };
+
+export type FolderItem = {
+  folderNo: number;
+  key: string;
+  name: string;
+  contentType: string;
 };
 
-export type NavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "AudioList"
->;
+type RootStackParamList = {
+  AudioList: { folderName: string | null };
+};
 
-export interface FileItem {
-  id: string; // id artık string olarak tutuluyor
-  name: string;
-}
+type navigation = StackNavigationProp<RootStackParamList, 'AudioList'>;
 
-interface FolderListProps {
-  navigation: NavigationProp;
-}
+type Props = {
+  navigation: navigation;
+};
 
-const FolderList: React.FC<FolderListProps> = ({ navigation }) => {
-  const [fileList, setFileList] = useState<FileItem[]>([]);
-  const [newFileName, setNewFileName] = useState<string>("");
+
+const FolderList = ({navigation}: Props) => {
+
+  const userId = firebase.auth().currentUser?.uid;
+  const storageRef = firebase.storage().ref();
+  const [folderList, setFolderList] = useState<any>([]);
+
 
   useEffect(() => {
-    fetchFiles();
+    listFolders();
+    const interval = setInterval(listFolders, 5000);
+
+    return () => clearInterval(interval);
   }, []);
 
-  const fetchFiles = async () => {
-    const dbRef = firebase.firestore().collection("files");
+  const listFolders = async() => {
+    const folderRef = storageRef.child(`userAudioRecordings/${userId}`);
 
-    try {
-      const snapshot = await dbRef.get();
-      const filesData: FileItem[] = [];
-      snapshot.forEach((doc) => {
-        const data = doc.data() as { name: string };
-        filesData.push({
-          id: doc.id, // Firestore ID'sini burada alıyoruz (string)
-          name: data.name,
-        });
-      });
-
-      // Alfabetik sıraya göre sıralama
-      filesData.sort((a, b) => a.name.localeCompare(b.name));
-      setFileList(filesData);
-    } catch (error) {
-      console.error("Error fetching files:", error);
-    }
+    const result = await folderRef.listAll();
+      
+    const folderNames = result.prefixes.map(folderRef => ({name: folderRef.name, referance:folderRef}));
+      
+    setFolderList(folderNames);
   };
 
-  const addFile = async () => {
-    if (!newFileName.trim()) {
+  const [newFolderName, setNewFolderName] = useState<string>("");
+
+  const addFolder = async () => {
+    if (!newFolderName.trim()) {
       Alert.alert("Dosya ismini girin.");
       return;
     }
 
-    const dbRef = firebase.firestore().collection("files");
-    const newFile = { name: newFileName };
+    const folderRef = storageRef.child(`userAudioRecordings/${userId}/${newFolderName}/temp.txt`);
+    // Create an empty Blob to upload (zero-byte file)
+    const emptyBlob = new Blob([], { type: "text/plain" });
 
-    try {
-      const docRef = await dbRef.add(newFile);
-      setFileList((prev) => [
-        ...prev,
-        { id: docRef.id, name: newFileName }, // Yeni belge için ID'yi alıyoruz
-      ]);
-      setNewFileName(""); // Input'u temizle
-    } catch (error) {
-      console.error("Error adding file:", error);
-    }
-  };
+  try {
+    // Upload the empty file
+    await uploadBytes(folderRef, emptyBlob);
+    console.log(`Temporary file uploaded to create folder: ${newFolderName}`);
 
-  const deleteFile = async (fileId: string) => {
-    const dbRef = firebase.firestore().collection("files").doc(fileId);
+  
+    console.log(`Temporary file deleted: ${folderRef.fullPath}`);
+  } catch (error) {
+    console.error("Error creating folder:", error);
+  }
+  }
 
-    Alert.alert("Dosyayı Sil", "Bu dosyayı silmek istediğinize emin misiniz?", [
-      { text: "Hayır", style: "cancel" },
-      {
-        text: "Evet",
-        onPress: async () => {
-          try {
-            await dbRef.delete(); // Belgeyi sil
-            setFileList((prev) => prev.filter((file) => file.id !== fileId)); // Ekrandan kaldır
-          } catch (error) {
-            console.error("Error deleting file:", error);
-          }
-        },
-      },
-    ]);
-  };
-
-  const renderFile = ({ item }: { item: FileItem }) => (
-    <View style={styles.fileItem}>
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate("AudioList", { fileId: Number(item.id) })
-        }
-      >
-        <Image
-          source={require("@/assets/images/folder.png")}
-          style={styles.fileImage}
-        />
-        <Text style={styles.fileName}>{item.name}</Text>
-      </TouchableOpacity>
-      <Button
-        title="Sil"
-        onPress={() => deleteFile(item.id)}
-        color={colors.danger}
-      />
-    </View>
+  const renderFolder = ({ item }: { item: FolderItem }) => (
+    <Folder folderName={item.name} navigation={navigation}/>
   );
 
   return (
     <View style={styles.container}>
-      <Image
+       <Image
         source={require("@/assets/images/SYNOPSISLogo.png")}
         style={styles.logo}
       />
       <TextInput
         style={styles.input}
         placeholder="Yeni dosya ismi"
-        value={newFileName}
-        onChangeText={setNewFileName}
+        value={newFolderName}
+        onChangeText={setNewFolderName}
       />
-      <TouchableOpacity onPress={addFile}>
-        <Text style={styles.addFileButton}>Dosya Ekle</Text>
-      </TouchableOpacity>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {fileList.map((item) => renderFile({ item }))}
-      </ScrollView>
+      <View style={styles.buttonContainer}>
+                <FontAwesome.Button name='plus' backgroundColor={colors.darkbrown} onPress={addFolder}>
+                  Add Folder</FontAwesome.Button>
+            </View>
+      <FlatList
+        keyExtractor={(item, index) => index.toString()}
+        data={folderList}
+        renderItem={renderFolder}
+      />
     </View>
   );
+
+
 };
 
 export default FolderList;

@@ -30,8 +30,6 @@ const useAudioUploader = () => {
     try {
       const type: string = 'audio/*';
       const file = await DocumentPicker.getDocumentAsync({ type }); 
-      console.log("this is");
-      console.log(file);
      
       if (file.canceled) {
         console.log('File selection canceled');
@@ -110,17 +108,13 @@ const useAudioUploader = () => {
  
   const uploadFile = async ({ audioURI, folder, fileName, userId }:FetchParams) => {
 
-    console.log(audioURI);
-    console.log(folder);
-    console.log(fileName);
-    console.log(userId);
 
     try {
       const storageRef = firebase.storage().ref(); // firebase storage ref
-      console.log(storageRef);
+      
        
       const fileRef_ = storageRef.child(`${folder}/${fileName}.mp3`); 
-      console.log(fileRef_);
+      
       setUserId(userId);
       setFileName(fileName);
       setFileRef(fileRef_) 

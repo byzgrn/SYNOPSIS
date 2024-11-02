@@ -3,9 +3,10 @@ import { Audio } from 'expo-av';
 
 import {firebase} from '../app/src/firebase';
 
-const playSound = (fileName:string) => {
+const playSound = (fileName:string, folderName:string | null) => {
   const userId = firebase.auth().currentUser?.uid;
-  const folder = `userAudioRecordings/${userId}`;
+  const folder = `userAudioRecordings/${userId}/${folderName}`;
+ 
   if(fileName === 'No Sound') return {
     play: () => {},
     stop: () => {},

@@ -6,8 +6,10 @@ import {colors} from "../../constants/Colors";
 export default StyleSheet.create({
     inner_container: {
         flex: 1,
+        flexDirection:'row',
         padding: 7,
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
+        alignItems:'center'
     },
     title: {
         fontWeight: 'bold',
@@ -34,7 +36,6 @@ export default StyleSheet.create({
     },
     buttonContainer: {
         paddingRight: 0,
-        height:35
     },
   
 })

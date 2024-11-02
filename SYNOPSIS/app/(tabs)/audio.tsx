@@ -4,13 +4,13 @@ import SaveAudio from "../src/pages/SaveAudio";
 import { Image, View, StyleSheet } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-const Stack = createNativeStackNavigator();
+type RootStackParamList = {
+  AddAudio:{ folderName: string; navigation:any };
+  SaveAudio:{ folderName: string; navigation:any };
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function TabTwoScreen() {
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="AddAudio" component={AddAudio} />
-      <Stack.Screen name="SaveAudio" component={SaveAudio} />
-    </Stack.Navigator>
-  );
+  
 }

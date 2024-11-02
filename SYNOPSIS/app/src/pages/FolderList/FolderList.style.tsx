@@ -49,4 +49,10 @@ export default StyleSheet.create({
     paddingHorizontal: 30,
     alignSelf: "center",
   },
+  buttonContainer: {
+    flexDirection: 'row',
+   justifyContent:'flex-end',
+    marginTop: 40,
+    margin: 10,
+}
 });

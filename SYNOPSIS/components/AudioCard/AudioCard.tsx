@@ -9,31 +9,29 @@ import playSound from '../../hooks/playSound';
 import processAudio from "@/hooks/processAudio";
 
 export type Audio = {
-  audioNo: number;
-  key: string;
   name: string;
-  contentType: string;
 }
 
 type AudioCardProps = {
   audio: Audio; 
+  folderName:string | null
 }
 
-const AudioCard = ({audio}:AudioCardProps) => {
+const AudioCard = ({audio, folderName}:AudioCardProps) => {
   const userId = firebase.auth().currentUser?.uid;
-    const folder = `userAudioRecordings/${userId}`;
+    const folder = `userAudioRecordings/${userId}/${folderName}`;
 
     const {
         play,
         stop,
         isPlaying,
 
-    } = playSound(audio.name);
+    } = playSound(audio.name, folderName);
 
     const {
       process
 
-  } = processAudio(audio.name);
+  } = processAudio(audio.name, folderName);
 
     useEffect(() => {
       return () => {
@@ -54,9 +52,6 @@ const AudioCard = ({audio}:AudioCardProps) => {
 
     function deleteAudio() {
         const audioRef = firebase.storage().ref().child(`${folder}/${audio.name}`);
-        console.log("hereee");
-        console.log(audio.name);
-        console.log(audioRef);
         audioRef.delete()
         .then(() => {
           console.log('Audio file deleted successfully!');
@@ -66,6 +61,11 @@ const AudioCard = ({audio}:AudioCardProps) => {
         });
     }
 
+    const [showButtons, setShowButtons] = useState(false);
+
+    const handleToggle = () =>{
+        setShowButtons((prev) => !prev);
+    }
 
     return(
         <TouchableOpacity  onPress={handleSoundPlay}>
@@ -74,11 +74,10 @@ const AudioCard = ({audio}:AudioCardProps) => {
                 <View style={styles.inner_container}>        
                     <Text style={styles.title} >{audio.name}</Text>                   
                 </View>
-                <View style={styles.buttonsLocation}>                                                   
-                    <FontAwesome.Button style={styles.buttonContainer} name='trash' size={20} backgroundColor={colors.danger} onPress={deleteAudio}/>
-                </View>  
-                <View style={styles.buttonsLocation}>                                                   
-                    <FontAwesome.Button style={styles.buttonContainer} name='play' size={20} backgroundColor={colors.darkbrown} onPress={process}/>
+                 <View style={styles.buttonsLocation}>
+                    <FontAwesome.Button style={styles.buttonContainer} name='pencil-square-o' size={20} backgroundColor={colors.darkbrown} onPress={process}/>                                                 
+                    <FontAwesome.Button style={styles.buttonContainer} name='trash' size={20} backgroundColor={colors.darkbrown} onPress={deleteAudio}/>
+                    <FontAwesome.Button style={styles.buttonContainer} name='list-ul' size={20} backgroundColor={colors.darkbrown} onPress={process}/>
                 </View>           
                 
             </View>

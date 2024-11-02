@@ -13,4 +13,13 @@ export default StyleSheet.create({
     marginTop: 40,
     margin: 10,
   },
+  logo: {
+    alignSelf: "center",
+    marginBottom: 20,
+    marginTop: 40,
+    width:200,
+    height:200,
+    objectFit:"contain"
+    
+  },
 });

@@ -10,9 +10,9 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 const genAI = new GoogleGenerativeAI("");
 
 
-const processAudio = (fileName:string) => {
+const processAudio = (fileName:string, folderName:string | any) => {
   const userId = firebase.auth().currentUser?.uid;
-  const folder = `userAudioRecordings/${userId}`;
+  const folder = `userAudioRecordings/${userId}/${folderName}`;
   if(fileName === 'No Sound') return {
     process: () => {}
   };

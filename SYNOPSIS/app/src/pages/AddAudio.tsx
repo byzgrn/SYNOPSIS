@@ -7,13 +7,18 @@ import useAudioUploader from "../../../hooks/useAudioUploader";
 import { colors } from "../../../constants/Colors";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { firebase } from "../firebase";
+import { RouteProp } from '@react-navigation/native';
 
 type RootStackParamList = {
-  SaveAudio: { key: string | null };
+  SaveAudio: { folderName: string | null  };
+  AddAudio: { folderName: string | null };
 };
-export type navigationProp = {
+export type Props = {
   navigation: StackNavigationProp<RootStackParamList, "SaveAudio">;
+  route: FolderRouteProp;
 };
+
+type FolderRouteProp = RouteProp<RootStackParamList, 'AddAudio'>;
 
 export type AudioItem = {
   audioNo: number;
@@ -22,9 +27,10 @@ export type AudioItem = {
   contentType: string;
 };
 
-const AddAudio = ({ navigation }: navigationProp) => {
+const AddAudio = ({ route, navigation }: Props) => {
+  const { folderName } = route.params;
   const userId = firebase.auth().currentUser?.uid;
-  const folder = `userAudioRecordings/${userId}`;
+  const folder = `userAudioRecordings/${userId}/${folderName}`;
   const { selectedFile, uploadProgress, selectFile, uploadFile } =
     useAudioUploader();
   const [fileName, setFileName] = useState("");
@@ -33,7 +39,7 @@ const AddAudio = ({ navigation }: navigationProp) => {
   };
 
   function navigateToSaveAudioScreen() {
-    navigation.navigate("SaveAudio", { key: null });
+    navigation.navigate("SaveAudio", {folderName:folderName });
   }
 
   return (
