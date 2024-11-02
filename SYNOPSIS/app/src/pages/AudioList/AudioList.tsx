@@ -81,9 +81,10 @@ const AudioList = ({route, navigation}:Props) => {
   );
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container}>    
       <View style={styles.buttonContainer}>
-                <FontAwesome.Button name='plus' backgroundColor={colors.darkbrown} onPress={navigateToAddAudioScreen}>Add Audio</FontAwesome.Button>
+      <Text style={styles.title}>{folderName}</Text>
+       <FontAwesome.Button name='plus' backgroundColor={colors.darkbrown} onPress={navigateToAddAudioScreen}>Add Audio</FontAwesome.Button>
       </View>
       <Image
         source={require("@/assets/images/SYNOPSISLogo.png")}

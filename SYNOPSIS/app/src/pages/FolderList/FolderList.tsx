@@ -95,16 +95,16 @@ const FolderList = ({navigation}: Props) => {
         source={require("@/assets/images/SYNOPSISLogo.png")}
         style={styles.logo}
       />
+      <View style={styles.buttonContainer}>
       <TextInput
         style={styles.input}
-        placeholder="Yeni dosya ismi"
+        placeholder="New File Name"
         value={newFolderName}
         onChangeText={setNewFolderName}
-      />
-      <View style={styles.buttonContainer}>
+      />      
                 <FontAwesome.Button name='plus' backgroundColor={colors.darkbrown} onPress={addFolder}>
                   Add Folder</FontAwesome.Button>
-            </View>
+      </View>
       <FlatList
         keyExtractor={(item, index) => index.toString()}
         data={folderList}

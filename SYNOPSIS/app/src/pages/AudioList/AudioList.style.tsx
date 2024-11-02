@@ -7,9 +7,16 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: colors.darkestbrown,
   },
+  title: {
+    fontWeight:'bold',
+    color:colors.grayish,
+    marginLeft:5,
+    fontSize:20,
+    textDecorationLine:'underline'
+  },
   buttonContainer: {
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
     marginTop: 40,
     margin: 10,
   },

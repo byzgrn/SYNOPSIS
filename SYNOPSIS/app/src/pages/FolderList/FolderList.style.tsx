@@ -44,9 +44,11 @@ export default StyleSheet.create({
   },
   input: {
     height: 40,
-    borderColor: colors.darkestbrown,
     backgroundColor: colors.grayish,
+    borderRadius:5,
     paddingHorizontal: 30,
+    marginRight:10,
+    fontWeight:'bold',
     alignSelf: "center",
   },
   buttonContainer: {

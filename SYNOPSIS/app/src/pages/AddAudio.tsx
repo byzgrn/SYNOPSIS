@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, View, Image } from "react-native";
 
 import Button from "../../../components/Button";
@@ -12,9 +12,10 @@ import { RouteProp } from '@react-navigation/native';
 type RootStackParamList = {
   SaveAudio: { folderName: string | null  };
   AddAudio: { folderName: string | null };
+  AudioList:{folderName: string | null };
 };
 export type Props = {
-  navigation: StackNavigationProp<RootStackParamList, "SaveAudio">;
+  navigation: StackNavigationProp<RootStackParamList, "AddAudio">;
   route: FolderRouteProp;
 };
 
@@ -41,6 +42,16 @@ const AddAudio = ({ route, navigation }: Props) => {
   function navigateToSaveAudioScreen() {
     navigation.navigate("SaveAudio", {folderName:folderName });
   }
+
+  function navigateToAudioListScreen() {
+    navigation.navigate("AudioList", {folderName:folderName });
+  }
+
+  useEffect(()=>{
+    if (uploadProgress === 100) {
+      navigateToAudioListScreen();
+  }
+  },[uploadProgress]);
 
   return (
     <View

@@ -13,21 +13,21 @@ import { RouteProp } from '@react-navigation/native';
 
 type RootStackParamList = {
   SaveAudio: { folderName: string | null };
-  AddAudio: { key: string | null };
+  AudioList: { folderName: string | null };
 
 };
 
 type FolderRouteProp = RouteProp<RootStackParamList, 'SaveAudio'>;
 
 export type Props = {
-  navigation : StackNavigationProp<RootStackParamList, 'AddAudio'>;
+  navigation : StackNavigationProp<RootStackParamList, 'AudioList'>;
   route: FolderRouteProp;
 }
 
 const SaveAudio = ({route, navigation}:Props) => { 
   const { folderName } = route.params;
   function navigateToAudioScreen() {
-    navigation.navigate('AddAudio', {key: null});
+    navigation.navigate('AudioList', {folderName: folderName});
 }
 
   const [recording, setRecording] = useState<any>(); 
