@@ -33,7 +33,14 @@ const Folder = ({folderName, navigation}:FolderProps) => {
             {
               text: "Evet",
               onPress: async () => {
-                    folderRef.delete()
+                
+                const folderContents = await folderRef.listAll();
+    
+                const deletePromises = folderContents.items.map((itemRef) => {
+                  return itemRef.delete();
+                });
+            
+                await Promise.all(deletePromises)
                     .then(() => {
                       console.log('Folder deleted successfully!');
                     })

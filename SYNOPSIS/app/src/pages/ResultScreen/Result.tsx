@@ -50,7 +50,25 @@ const Result: React.FC = () => {
   }
 
   const { text, date } = resultData;
-  const formattedDate = date.toDate().toDateString();
+  const formattedDate = date.toDate().toLocaleDateString();
+
+  const formatText = (text:string) => {
+    const sections = text.split('\n\n').map((section, index) => {
+      const [title, ...content] = section.split('\n');
+      return (
+        <View key={index} style={styles.section}>
+          <Text style={styles.textTitle}>{title.trim().toUpperCase()}</Text>
+          {content.map((line, lineIndex) => (
+            <Text key={lineIndex} style={styles.content}>
+              {line.trim()}
+            </Text>
+          ))}
+        </View>
+      );
+    });
+    return sections;
+  };
+ 
 
   return (
     <View style={styles.container}>
@@ -58,10 +76,9 @@ const Result: React.FC = () => {
         source={require("@/assets/images/SYNOPSISLogo.png")}
         style={styles.logo}
       />
-      <Text style={styles.title}>Result for {audioFileName}</Text>
       <Text style={styles.date}>Date: {formattedDate}</Text>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <Text style={styles.result}>{text}</Text>
+        {formatText(text)}
       </ScrollView>
     </View>
   );

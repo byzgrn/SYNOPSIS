@@ -8,10 +8,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.darkbrown,
   },
   title: {
-    fontSize: 24,
+    fontSize: 25,
     fontWeight: "bold",
-    marginBottom: 16,
-    alignSelf: "center",
+    marginTop:20 ,
+    marginLeft:0,
+    color:colors.dark,
+    textDecorationLine:'underline'
   },
   resultCard: {
     padding: 10,

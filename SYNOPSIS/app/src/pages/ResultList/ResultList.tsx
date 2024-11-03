@@ -71,7 +71,7 @@ const ResultList: React.FC<Props> = ({ route, navigation }) => {
         source={require("@/assets/images/SYNOPSISDarkBrownLogo.png")}
         style={styles.logo}
       />
-      <Text style={styles.title}>Results for {audioFileName}</Text>
+      <Text style={styles.title}>Results</Text>
       <FlatList
         keyExtractor={(item) => item.id}
         data={results}

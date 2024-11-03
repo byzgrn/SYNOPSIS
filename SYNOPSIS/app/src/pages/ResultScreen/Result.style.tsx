@@ -23,8 +23,13 @@ export default StyleSheet.create({
     color: colors.dark,
   },
   date: {
-    fontSize: 16,
+    fontSize: 18,
     color: colors.grayish,
+    alignSelf:'flex-start',
+    fontWeight:'bold',
+    textDecorationLine:'underline',
+    marginLeft:-12,
+    marginBottom:10
   },
   result: {
     marginVertical: 16,
@@ -47,5 +52,19 @@ export default StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
     justifyContent: "flex-start",
+  },
+  section: {
+    marginBottom: 16,
+  },
+  textTitle: {
+    fontWeight: 'bold',
+    fontSize: 14,
+    marginBottom: 8,
+    color:colors.grayish
+  },
+  content: {
+    fontSize: 16,
+    marginBottom: 4,
+    color:colors.dark
   },
 });

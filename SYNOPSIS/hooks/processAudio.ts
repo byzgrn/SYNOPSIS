@@ -33,18 +33,19 @@ const useProcessAudio = (fileName: string, folderName: string | any) => {
           },
           {
             text:
-              "Reply to my questions with exact and strict responses, with no additional information." +
+              "Reply to my questions with exact and strict responses, with no additional information" +
               "if content is not educational or analyzable reply with 'No'" +
-              "If content is educational," +
+              "If content is educational answer the following," +
               "What are the main ideas?" +
               "What are the key terms and definitions?" +
               "What are the lecture highlights?" +
               "What are the connections to other concepts and courses?" +
               "What are the assignments and deadlines?" +
               "What is the summary of the lecture topic and what is covered." +
-              "Please provide the information clearly and in an organized format, in " +
-              defaultLanguage +
-              ":\n\nMain ideas:\n- [Specify the main ideas here.]\n\nKey terms and definitions:\n- [Specify the key terms and definitions here.]\n\nLecture highlights:\n- [Specify the lecture highlights here.]\n\nConnections to other concepts, courses, etc.:\n- [Specify the connections to other concepts and courses here.]\n\nAssignments and deadlines:\n- [Specify the assignments and deadlines here.]\n\nSummary of the lecture:\n- [Specify the summary of the lecture and what was covered here.]",
+              "Please provide the information clearly and in an organized format:" +
+              ":\n\nMain ideas:\n- [Specify the main ideas here.]\n\nKey terms and definitions:\n- [Specify the key terms and definitions here.]\n\nLecture highlights:\n- [Specify the lecture highlights here.]\n\nConnections to other concepts, courses, etc.:\n- [Specify the connections to other concepts and courses here.]\n\nAssignments and deadlines:\n- [Specify the assignments and deadlines here.]\n\nSummary of the lecture:\n- [Specify the summary of the lecture and what was covered here.]" 
+              
+
           },
         ]);
 
