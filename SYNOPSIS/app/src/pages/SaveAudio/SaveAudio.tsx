@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useEffect, useState} from 'react';
 import { View } from 'react-native';
 import { Audio } from 'expo-av';
 
@@ -10,6 +10,8 @@ import useAudioUploader from '../../../../hooks/useAudioUploader';
 import { firebase } from '../../firebase';
 import Button from '../../../../components/Button';
 import { RouteProp } from '@react-navigation/native';
+import Icon from '@expo/vector-icons/MaterialCommunityIcons';
+import {colors} from '@/constants/Colors';
 
 type RootStackParamList = {
   SaveAudio: { folderName: string | null };
@@ -28,7 +30,7 @@ const SaveAudio = ({route, navigation}:Props) => {
   const { folderName } = route.params;
   function navigateToAudioScreen() {
     navigation.navigate('AudioList', {folderName: folderName});
-}
+  }
 
   const [recording, setRecording] = useState<any>(); 
   const [recordEndedSuccessfully, setRecordEndedSuccessfully] = useState(false); 
@@ -37,11 +39,33 @@ const SaveAudio = ({route, navigation}:Props) => {
   const [audioURI, setAudioURI] = useState(null);
   const [audioName, setAudioName] = useState<any>(null);
 
+  const [index, setIndex] = useState(0);
+  const [showIcons, setShowIcons] = useState(true);
+  const [color, setColor] = useState([colors.darkestbrown, colors.brown]) // Track visibility of icons
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (showIcons) {
+        if (index < 3) {
+          setIndex((prevIndex) => prevIndex + 1); 
+        } else {
+          setShowIcons(false); 
+        }
+      } else {
+        setIndex(0);
+        setColor([color[1], color[0]])
+        setShowIcons(true); 
+        
+      }
+    }, 800);
+
+    return () => clearInterval(interval); 
+  }, [index, showIcons]);
+
 
 
   const userId = firebase.auth().currentUser?.uid;
 
-  console.log(userId);
 
   const folder =  `userAudioRecordings/${userId}/${folderName}`; 
 
@@ -112,7 +136,7 @@ const SaveAudio = ({route, navigation}:Props) => {
 
         setAudioURI(recording.getURI()); 
         setAudioName(getDateAndTime()); 
-        setRecordingContent({ // UI
+        setRecordingContent({
           sound: sound,
           duration: status.durationMillis / 1000, 
           file: recording.getURI()
@@ -130,9 +154,15 @@ const SaveAudio = ({route, navigation}:Props) => {
     <View style={styles.container}>  
        
       {recordContinues ? 
+      <>
+      <View style={styles.buttonContainer}>
+      {Array.from({ length: 4 }).map((_, idx) => (
+      <Icon key={idx} name='circle'  size={25} color={idx < index ? color[0] : color[1]}/>))}
+      </View>
         <View style={styles.buttonContainer}>
           <Button onPress={completeRecording} text={'Stop Recording'}></Button>
         </View>
+        </>
         : 
         <View style={styles.row}>
           {recordEndedSuccessfully ? 

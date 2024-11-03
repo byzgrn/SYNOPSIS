@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 
@@ -7,8 +7,6 @@ import { colors } from "../../constants/Colors";
 import { firebase } from "../../app/src/firebase";
 import playSound from "../../hooks/playSound";
 import processAudio from "@/hooks/processAudio";
-import signIn from "@/hooks/signIn";
-import Button from "../Button";
 
 export type Audio = {
   name: string;
@@ -26,12 +24,6 @@ const AudioCard = ({ audio, folderName }: AudioCardProps) => {
   const { play, stop, isPlaying } = playSound(audio.name, folderName);
 
   const { process } = processAudio(audio.name, folderName);
-
-  useEffect(() => {
-    return () => {
-      stop();
-    };
-  }, []);
 
   function handleSoundPlay() {
     if (isPlaying) {
@@ -52,12 +44,6 @@ const AudioCard = ({ audio, folderName }: AudioCardProps) => {
         console.log("Error deleting audio file:", error.message);
       });
   }
-
-  const [showButtons, setShowButtons] = useState(false);
-
-  const handleToggle = () => {
-    setShowButtons((prev) => !prev);
-  };
 
   return (
     <TouchableOpacity onPress={handleSoundPlay}>
