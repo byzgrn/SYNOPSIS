@@ -1,7 +1,6 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-
 import styles from "./AudioCard.style";
 import { colors } from "../../constants/Colors";
 import { firebase } from "../../app/src/firebase";
@@ -15,14 +14,14 @@ export type Audio = {
 type AudioCardProps = {
   audio: Audio;
   folderName: string | null;
+  navigation: any;
 };
 
-const AudioCard = ({ audio, folderName }: AudioCardProps) => {
+const AudioCard = ({ audio, folderName, navigation }: AudioCardProps) => {
   const userId = firebase.auth().currentUser?.uid;
   const folder = `userAudioRecordings/${userId}/${folderName}`;
 
   const { play, stop, isPlaying } = playSound(audio.name, folderName);
-
   const { process } = processAudio(audio.name, folderName);
 
   function handleSoundPlay() {
@@ -44,6 +43,24 @@ const AudioCard = ({ audio, folderName }: AudioCardProps) => {
         console.log("Error deleting audio file:", error.message);
       });
   }
+
+  const navigateToResultList = async () => {
+    try {
+      const audioRef = firebase
+        .storage()
+        .ref()
+        .child(`${folder}/${audio.name}`);
+      const audioUrl = await audioRef.getDownloadURL();
+
+      navigation.navigate("ResultList", {
+        audioFileName: audio.name,
+        audioUrl: audioUrl,
+      });
+      console.log(audioUrl);
+    } catch (error) {
+      console.error("Error fetching audio URL:", error);
+    }
+  };
 
   return (
     <TouchableOpacity onPress={handleSoundPlay}>
@@ -71,7 +88,7 @@ const AudioCard = ({ audio, folderName }: AudioCardProps) => {
             name="list-ul"
             size={20}
             backgroundColor={colors.darkbrown}
-            onPress={process}
+            onPress={navigateToResultList}
           />
         </View>
       </View>
