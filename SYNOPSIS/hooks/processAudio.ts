@@ -57,11 +57,13 @@ const useProcessAudio = (fileName: string, folderName: string | any) => {
             "Yüklenen ses dosyası bir eğitim kaydı değildir."
           );
         } else {
+          const downloadURL = await fileRef.getDownloadURL();
+
           const record = {
             date: new Date(),
             text: responseText,
             audioFileName: fileName,
-            folderName: folderName,
+            audioUrl: downloadURL,
           };
 
           await firebase.firestore().collection("records").add(record);

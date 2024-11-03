@@ -7,8 +7,8 @@ import styles from "./ResultList.Style";
 import ResultCard from "@/components/ResultCard";
 
 type RootStackParamList = {
-  ResultList: { audioFileName: string; folderName: string };
-  Result: { audioFileName: string; folderName: string };
+  ResultList: { audioFileName: string; audioUrl: string };
+  Result: { audioFileName: string; audioUrl: string };
 };
 
 type ResultListRouteProp = RouteProp<RootStackParamList, "ResultList">;
@@ -25,25 +25,24 @@ type Props = {
 export type ResultItem = {
   id: string;
   date: firebase.firestore.Timestamp;
-  audioFileName: string;
+  audioUrl: string;
   folderName: string;
   text: string;
 };
 
 const ResultList: React.FC<Props> = ({ route, navigation }) => {
-  const { audioFileName, folderName } = route.params;
+  const { audioFileName, audioUrl } = route.params;
   const [results, setResults] = React.useState<ResultItem[]>([]);
 
   React.useEffect(() => {
     fetchResults();
-  }, [audioFileName, folderName]);
+  }, [audioFileName, audioUrl]);
 
   const fetchResults = async () => {
     try {
       const recordsRef = firebase.firestore().collection("records");
       const snapshot = await recordsRef
-        .where("folderName", "==", folderName)
-        .where("audioFileName", "==", audioFileName)
+        .where("audioUrl", "==", audioUrl)
         .orderBy("date", "desc")
         .get();
 
@@ -54,13 +53,13 @@ const ResultList: React.FC<Props> = ({ route, navigation }) => {
 
       setResults(resultsData);
     } catch (error) {
-      console.error("Error fetching results:", error);
+      console.error("Error fetching results in resultList:", error);
     }
   };
 
   const renderResult = ({ item }: { item: ResultItem }) => (
     <ResultCard
-      folderName={folderName}
+      audioUrl={audioUrl}
       fileName={audioFileName}
       navigation={navigation}
     />

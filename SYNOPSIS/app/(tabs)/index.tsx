@@ -13,8 +13,8 @@ type RootStackParamList = {
   AudioList: { folderName: string; navigation: any };
   AddAudio: { folderName: string; navigation: any };
   SaveAudio: { folderName: string; navigation: any };
-  ResultList: { audioFileName: string; folderName: string };
-  Result: { audioFileName: string; folderName: string };
+  ResultList: { audioFileName: string; audioUrl: string };
+  Result: { audioFileName: string; audioUrl: string };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();

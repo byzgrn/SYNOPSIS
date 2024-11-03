@@ -8,20 +8,17 @@ export type Audio = {
 };
 
 type ResultCardProps = {
-  folderName: string;
+  audioUrl: string;
   fileName: string;
   navigation: any;
 };
 
-const ResultCard = ({ folderName, fileName, navigation }: ResultCardProps) => {
+const ResultCard = ({ audioUrl, fileName, navigation }: ResultCardProps) => {
   const userId = firebase.auth().currentUser?.uid;
-  const folder = `userAudioRecordings/${userId}/${folderName}`;
-  const file = `userAudioRecordings/${userId}/${folderName}/${fileName}`;
 
   const navigateToResult = () => {
     navigation.navigate("Result", {
-      audioFileName: fileName,
-      folderName: folderName,
+      audioUrl: audioUrl,
     });
   };
 

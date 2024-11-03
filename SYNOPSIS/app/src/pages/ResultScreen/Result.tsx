@@ -5,7 +5,7 @@ import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import styles from "./Result.style";
 
 type RootStackParamList = {
-  ResultCard: { audioFileName: string; folderName: string };
+  ResultCard: { audioFileName: string; audioUrl: string };
 };
 
 type ResultCardRouteProp = RouteProp<RootStackParamList, "ResultCard">;
@@ -15,7 +15,7 @@ interface ResultData {
   text: string;
   date: firebase.firestore.Timestamp;
   audioFileName: string;
-  folderName: string;
+  audioUrl: string;
 }
 
 const Result: React.FC = () => {
@@ -23,15 +23,14 @@ const Result: React.FC = () => {
   const navigation = useNavigation();
   const route = useRoute<ResultCardRouteProp>();
 
-  const { audioFileName, folderName } = route.params;
+  const { audioFileName, audioUrl } = route.params;
 
   useEffect(() => {
     const fetchData = async () => {
       const db = firebase.firestore();
       const querySnapshot = await db
         .collection("records")
-        .where("folderName", "==", folderName)
-        .where("audioFileName", "==", audioFileName)
+        .where("audioUrl", "==", audioUrl)
         .limit(1)
         .get();
 
@@ -44,7 +43,7 @@ const Result: React.FC = () => {
     };
 
     fetchData();
-  }, [audioFileName, folderName]);
+  }, [audioFileName, audioUrl]);
 
   if (!resultData) {
     return <Text>Loading...</Text>;
