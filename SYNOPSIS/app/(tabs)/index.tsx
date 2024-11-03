@@ -4,7 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import AudioList from "../src/pages/AudioList";
 import ResultList from "../src/pages/ResultList";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import AddAudio from "../src/pages/AddAudio";
+import AddAudio from "../src/pages/AddAudio/AddAudio";
 import SaveAudio from "../src/pages/SaveAudio";
 import Result from "../src/pages/ResultScreen";
 

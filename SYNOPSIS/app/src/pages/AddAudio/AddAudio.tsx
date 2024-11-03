@@ -1,25 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { Text, View, Image } from "react-native";
-
-import Button from "../../../components/Button";
-import Input from "../../../components/Input";
-import useAudioUploader from "../../../hooks/useAudioUploader";
-import { colors } from "../../../constants/Colors";
+import styles from "./AddAudio.Style";
+import Button from "../../../../components/Button";
+import Input from "../../../../components/Input";
+import useAudioUploader from "../../../../hooks/useAudioUploader";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { firebase } from "../firebase";
-import { RouteProp } from '@react-navigation/native';
+import { firebase } from "../../firebase";
+import { RouteProp } from "@react-navigation/native";
 
 type RootStackParamList = {
-  SaveAudio: { folderName: string | null  };
+  SaveAudio: { folderName: string | null };
   AddAudio: { folderName: string | null };
-  AudioList:{folderName: string | null };
+  AudioList: { folderName: string | null };
 };
 export type Props = {
   navigation: StackNavigationProp<RootStackParamList, "AddAudio">;
   route: FolderRouteProp;
 };
 
-type FolderRouteProp = RouteProp<RootStackParamList, 'AddAudio'>;
+type FolderRouteProp = RouteProp<RootStackParamList, "AddAudio">;
 
 export type AudioItem = {
   audioNo: number;
@@ -40,41 +39,23 @@ const AddAudio = ({ route, navigation }: Props) => {
   };
 
   function navigateToSaveAudioScreen() {
-    navigation.navigate("SaveAudio", {folderName:folderName });
+    navigation.navigate("SaveAudio", { folderName: folderName });
   }
 
   function navigateToAudioListScreen() {
-    navigation.navigate("AudioList", {folderName:folderName });
+    navigation.navigate("AudioList", { folderName: folderName });
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     if (uploadProgress === 100) {
       navigateToAudioListScreen();
-  }
-  },[uploadProgress]);
+    }
+  }, [uploadProgress]);
 
   return (
-    <View
-      style={{
-        //padding: 50,
-        backgroundColor: colors.darkbrown,
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
+    <View style={styles.container}>
       <Image source={require("@/assets/images/SYNOPSISDarkBrownLogo.png")} />
-      <View
-        style={{
-          padding: 25,
-          margin: 20,
-          marginTop: 50,
-          backgroundColor: colors.brown,
-          borderWidth: 2,
-          borderColor: colors.grayish,
-          borderRadius: 5,
-        }}
-      >
+      <View style={styles.buttonContainer}>
         <Button text="Select Audio File" onPress={selectFile} />
         {selectedFile && (
           <View style={{ marginBottom: 20 }}>
@@ -98,16 +79,7 @@ const AddAudio = ({ route, navigation }: Props) => {
           </View>
         )}
       </View>
-      <View
-        style={{
-          padding: 25,
-          margin: 20,
-          backgroundColor: colors.brown,
-          borderWidth: 2,
-          borderColor: colors.grayish,
-          borderRadius: 5,
-        }}
-      >
+      <View style={styles.buttonContainer}>
         <Button text="New Recording" onPress={navigateToSaveAudioScreen} />
       </View>
     </View>
