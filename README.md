@@ -21,6 +21,7 @@ Mobil uygulamaya yüklenilen ve uygulama tarafından kaydedilen ders ses kayıtl
   
 **Kullanılan Teknolojiler:** Gemini AI, React-Native Expo, Firebase(Authentication, FireStore Database, Storage)
 
+**Proje Videosu:** [SYNOPSIS](https://youtube.com/shorts/21FLTsz5csE?si=7eMCUe5Aomco_bj9)
 ## Developers
 - Beyza Nur Gören
 - Yağmur Akbaba
