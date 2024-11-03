@@ -6,19 +6,21 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingTop: 40,
+    paddingTop: 50,
     paddingHorizontal: 20,
     backgroundColor: colors.darkestbrown,
   },
   logo: {
-    width: "100%",
-    height: 150,
-    resizeMode: "contain",
     marginBottom: 20,
+    width: 200,
+    height: 200,
+    objectFit: "contain",
+    backgroundColor: colors.darkestbrown,
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
+    color: colors.dark,
   },
   date: {
     fontSize: 16,
@@ -27,6 +29,7 @@ export default StyleSheet.create({
   result: {
     marginVertical: 16,
     fontSize: 18,
+    color: colors.dark,
   },
   backButton: {
     position: "absolute",

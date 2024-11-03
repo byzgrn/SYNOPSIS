@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { View, FlatList, Text ,Image} from "react-native";
+import { View, FlatList, Text, Image } from "react-native";
 import AudioCard from "../../../../components/AudioCard";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp } from "@react-navigation/native";
 
 import styles from "./AudioList.style";
 import { firebase } from "../../firebase";
@@ -11,15 +11,15 @@ import { colors } from "../../../../constants/Colors";
 
 type RootStackParamList = {
   AudioList: { folderName: string | null };
-  AddAudio: { folderName: string | null};
+  AddAudio: { folderName: string | null };
 };
 
-type FolderRouteProp = RouteProp<RootStackParamList, 'AudioList'>;
- type navigationProp =  StackNavigationProp<RootStackParamList, 'AddAudio'>;
+type FolderRouteProp = RouteProp<RootStackParamList, "AudioList">;
+type navigationProp = StackNavigationProp<RootStackParamList, "AddAudio">;
 
 type Props = {
   route: FolderRouteProp;
-  navigation:navigationProp;
+  navigation: navigationProp;
 };
 
 export type AudioItem = {
@@ -29,15 +29,15 @@ export type AudioItem = {
   contentType: string;
 };
 
-const AudioList = ({route, navigation}:Props) => {
+const AudioList = ({ route, navigation }: Props) => {
   const { folderName } = route.params;
   const userId = firebase.auth().currentUser?.uid;
   const storageRef = firebase.storage().ref();
   const [audioList, setAudioList] = useState<AudioItem[]>([]);
 
   function navigateToAddAudioScreen() {
-    navigation.navigate('AddAudio', {folderName: folderName});
-}
+    navigation.navigate("AddAudio", { folderName: folderName });
+  }
 
   useEffect(() => {
     listAudios();
@@ -47,8 +47,9 @@ const AudioList = ({route, navigation}:Props) => {
   }, []);
 
   const listAudios = () => {
-    const audioRef = storageRef.child(`userAudioRecordings/${userId}/${folderName}`);
-    
+    const audioRef = storageRef.child(
+      `userAudioRecordings/${userId}/${folderName}`
+    );
 
     audioRef
       .listAll()
@@ -64,11 +65,10 @@ const AudioList = ({route, navigation}:Props) => {
           });
         });
         Promise.all(promises).then((list: any) => {
-          
           setAudioList(list);
-          setAudioList((prevFiles) => 
-            prevFiles.filter(file => file.name !== "temp.txt")
-        );
+          setAudioList((prevFiles) =>
+            prevFiles.filter((file) => file.name !== "temp.txt")
+          );
         });
       })
       .catch((error: Error) => {
@@ -77,14 +77,20 @@ const AudioList = ({route, navigation}:Props) => {
   };
 
   const renderAudio = ({ item }: { item: AudioItem }) => (
-    <AudioCard audio={item} folderName={folderName} />
+    <AudioCard audio={item} folderName={folderName} navigation={navigation} />
   );
 
   return (
-    <View style={styles.container}>    
+    <View style={styles.container}>
       <View style={styles.buttonContainer}>
-      <Text style={styles.title}>{folderName}</Text>
-       <FontAwesome.Button name='plus' backgroundColor={colors.darkbrown} onPress={navigateToAddAudioScreen}>Add Audio</FontAwesome.Button>
+        <Text style={styles.title}>{folderName}</Text>
+        <FontAwesome.Button
+          name="plus"
+          backgroundColor={colors.darkbrown}
+          onPress={navigateToAddAudioScreen}
+        >
+          Add Audio
+        </FontAwesome.Button>
       </View>
       <Image
         source={require("@/assets/images/SYNOPSISLogo.png")}

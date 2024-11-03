@@ -58,7 +58,7 @@ const useProcessAudio = (fileName: string, folderName: string | any) => {
           );
         } else {
           const record = {
-            date: new Date().toISOString(),
+            date: new Date(),
             text: responseText,
             audioFileName: fileName,
             folderName: folderName,
